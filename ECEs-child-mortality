@@ -1,0 +1,381 @@
+#hw_analysis_u5mr
+#===========================================================================================================================
+library(foreign)
+library(lubridate)
+library(lme4)
+library(ggplot2)
+library(dlnm)
+library(splines)
+library(survival)
+
+#===========================================================================================================================
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_temp_month.rda")
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_precip_month.rda")
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_hw.rda")
+
+frame_u5mr_hw <- data.frame(frame_u5mr_temp, frame_u5mr_precip, frame_u5mr_hw)
+#===========================================================================================================================
+data <- frame_u5mr_hw
+
+met_hw_90_2 <- subset(data,select=c(
+    lag_1m_hw_90_2,lag_2m_hw_90_2,lag_3m_hw_90_2,lag_4m_hw_90_2,lag_5m_hw_90_2,lag_6m_hw_90_2,
+    lag_7m_hw_90_2,lag_8m_hw_90_2,lag_9m_hw_90_2,lag_10m_hw_90_2,lag_11m_hw_90_2,lag_12m_hw_90_2
+    ))
+
+met_hw_90_2 <- ifelse(met_hw_90_2 == 0, 0 ,1)
+
+#===========================================================================================================================
+arglag <-equalknots(c(1,12), fun="ns", df=3, intercept=FALSE) 
+
+cbECE <- crossbasis(met_hw_90_2 ,lag=c(1,12),argvar=list(fun="lin"),arglag = list(fun="poly",degree=3))
+
+model <- clogit(formula = u5mr ~ cbECE
+        + as.factor(death_year) 
+        + as.factor(death_month)
+        + maternal_age_death
+        + ns(lag_0m_temp, 6)
+        + ns(lag_0m_precip, 3)
+        + CPI
+        + GDP
+        + as.factor(DHS_survey)
+        + as.factor(bnum)
+        + as.factor(sex)
+        + strata(caseid)
+        ,method = "breslow"
+        ,data=data, na.action=na.omit)
+
+overall_pred_ECE_lag <- crosspred(cbECE,model,by= 1,cen = 0, cumul = TRUE)
+
+plot(overall_pred_ECE_lag,"slices",var=1,main="Heatwave exposure",cumul = FALSE,col="black",
+ xlab="Lag (month)", ylab="Odds ratio",
+ cex.main=1.8,cex.lab=1.8, cex.axis=1.5,lwd=4, ylim=c(0.98,1.02),
+     ci.arg=list(col = grey(0.7)))
+
+overall_pred_ECE_ER_dlnm <- crosspred(cbECE,model,by= 1, cen= 0, cumul = TRUE)
+
+result_hw_serise <- data.frame(with(overall_pred_ECE_ER_dlnm,cbind(cumRRfit[,12],cumRRlow[,12],cumRRhigh[,12])))
+
+result_hw_serise$ECE <- rownames(result_hw_serise)
+
+result_hw_value <- result_hw_serise[which(result_hw_serise$ECE == 1),]
+
+#EP_analysis_u5mr
+#====================================================================================================================================
+library(foreign)
+library(lubridate)
+library(lme4)
+library(ggplot2)
+library(dlnm)
+library(splines)
+library(survival)
+
+#EP_analysis
+#===========================================================================================================================
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_temp_month.rda")
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_precip_month.rda")
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_EP.rda")
+
+frame_u5mr_EP <- data.frame(frame_u5mr_temp, frame_u5mr_precip, frame_u5mr_EP)
+#===========================================================================================================================
+data <- frame_u5mr_EP
+
+met_extr_tp_99 <- subset(data,select=c(
+    lag_0_extr_tp_99,lag_1m_extr_tp_99,lag_2m_extr_tp_99,lag_3m_extr_tp_99,lag_4m_extr_tp_99,lag_5m_extr_tp_99,lag_6m_extr_tp_99,
+    lag_7m_extr_tp_99,lag_8m_extr_tp_99,lag_9m_extr_tp_99,lag_10m_extr_tp_99,lag_11m_extr_tp_99,lag_12m_extr_tp_99
+    ))
+
+met_extr_tp_99 <- ifelse(met_extr_tp_99 == 0, 0 ,1)
+
+#===========================================================================================================================
+arglag <-equalknots(c(1,12), fun="ns", df=3, intercept=FALSE) 
+
+cbECE <- crossbasis(met_extr_tp_99, lag=c(1,12),argvar=list(fun="lin"),arglag = list(fun="poly",degree=3))
+
+model <- clogit(formula = u5mr ~ cbECE
+        + as.factor(death_year) 
+        + as.factor(death_month)
+        + maternal_age_death
+        + ns(lag_0m_temp, 6)
+        + ns(lag_0m_precip, 3)
+        + CPI
+        + GDP
+        + as.factor(DHS_survey)
+        + as.factor(bnum)
+        + as.factor(sex)
+        + strata(caseid)
+        ,method = "breslow"
+        ,data=data, na.action=na.omit)
+
+overall_pred_ECE_lag <- crosspred(cbECE,model,by= 1,cen = 0, cumul = TRUE)
+
+plot(overall_pred_ECE_lag,"slices",var=1,main="Extreme precipitation exposure",cumul = FALSE,col="black",
+ xlab="Lag (month)", ylab="Odds ratio",
+ cex.main=1.8,cex.lab=1.8, cex.axis=1.5,lwd=4, ylim=c(0.98,1.02),
+     ci.arg=list(col = grey(0.7)))
+
+overall_pred_ECE_lag_tp_99_1 <- crosspred(cbECE, model, by= 1, cen = 0, cumul = TRUE)
+
+overall_pred_ECE_ER_dlnm <- crosspred(cbECE,model,by= 1, cen= 0, cumul = TRUE)
+
+result_EP_serise <- data.frame(with(overall_pred_ECE_ER_dlnm,cbind(cumRRfit[,12],cumRRlow[,12],cumRRhigh[,12])))
+
+result_EP_serise$ECE <- rownames(result_EP_serise)
+
+result_EP_value <- result_EP_serise[which(result_EP_serise$ECE == 1),]
+
+#flood_total_analysis_u5mr
+#====================================================================================================================================
+library(foreign)
+library(lubridate)
+library(lme4)
+library(ggplot2)
+library(dlnm)
+library(splines)
+library(survival)
+
+#===========================================================================================================================
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_temp_month.rda")
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_precip_month.rda")
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_flood_total.rda")
+
+frame_u5mr_flood <- data.frame(frame_u5mr_temp_month, frame_u5mr_precip_month, frame_u5mr_flood_total)
+#===========================================================================================================================
+data <- frame_u5mr_flood
+
+met_extr_flood <- subset(data,select=c(
+    lag_1m_flood, lag_2m_flood,lag_3m_flood,lag_4m_flood,lag_5m_flood, lag_6m_flood,
+    lag_7m_flood,lag_8m_flood,lag_9m_flood,lag_10m_flood, lag_11m_flood,lag_12m_flood,lag_1_12m_flood
+    ))
+
+#===========================================================================================================================
+result_merge <- data.frame(matrix(NA, 13, 5))
+
+colnames(result_merge) <- c("Lag", "P", "OR", "OR_low", "OR_high")
+
+result_merge[,1] <- c("Lag 1", "Lag 2","Lag 3","Lag 4",  "Lag 5", "Lag 6", "Lag 7", "Lag 8",
+ "Lag 9", "Lag 10", "Lag 11", "Lag 12", "Lag 1_12")
+
+for(i in 1:13){
+
+    cat(i)
+
+model <- clogit(formula = u5mr ~ met_extr_flood[,i]
+        + as.factor(death_year) 
+        + as.factor(death_month)
+        + maternal_age_death
+        + ns(lag_0m_temp, 6)
+        + ns(lag_0m_precip, 3)
+        + CPI
+        + GDP
+        + as.factor(DHS_survey)
+        + as.factor(bnum)
+        + as.factor(sex)
+        + strata(caseid)
+        ,method = "breslow"
+        ,data=data, na.action=na.omit)
+
+coef<-data.frame(summary(model)$coefficients)
+exp<-data.frame(exp(coef(model)))
+conf<-data.frame(exp(confint(model)))
+p<-round(coef[1,5],3)
+OR<-round(exp[1,1],3)
+OR_high<-round(conf[1,2],3)
+OR_low<-round(conf[1,1],3)
+
+result<-data.frame(P=p,coefficient=OR,low=OR_low,high=OR_high)
+
+result_merge[i, c(2:5)] <- result
+
+}
+
+#spei_6_analysis_u1mr
+#====================================================================================================================================
+library(foreign)
+library(lubridate)
+library(lme4)
+library(ggplot2)
+library(dlnm)
+library(splines)
+library(survival)
+
+#===========================================================================================================================
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_temp_month.rda")
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_precip_month.rda")
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_spei_6.rda")
+
+frame_u5mr_spei_6 <- data.frame(frame_u5mr_temp, frame_u5mr_precip, frame_u5mr_spei_6)
+#===========================================================================================================================
+data <- frame_u5mr_spei_6
+
+met_extr_spei_6 <- subset(data,select=c(
+    lag_1_spei_6,lag_2_spei_6,lag_3_spei_6,lag_4_spei_6,lag_5_spei_6,lag_6_spei_6,lag_7_spei_6,
+    lag_8_spei_6,lag_9_spei_6,lag_10_spei_6,lag_11_spei_6,lag_12_spei_6
+    ))
+
+for(i in 1:12){
+
+    met_extr_spei_6[,i] <- ifelse(met_extr_spei_6[,i] <= -1, 1, 0)
+
+}
+
+#===========================================================================================================================
+arglag <-equalknots(c(1,12), fun="ns", df=3, intercept=FALSE) 
+
+cbECE <- crossbasis(met_extr_spei_6,lag=c(1,12),argvar=list(fun="lin"),arglag = list(fun="poly",degree=3))
+
+model <- clogit(formula = u5mr ~ cbECE
+        + as.factor(death_year) 
+        + as.factor(death_month)
+        + maternal_age_death
+        + ns(lag_0m_temp, 6)
+        + ns(lag_0m_precip, 3)
+        + CPI
+        + GDP
+        + as.factor(DHS_survey)
+        + as.factor(bnum)
+        + as.factor(sex)
+        + strata(caseid)
+        ,method = "breslow"
+        ,data=data, na.action=na.omit)
+
+
+overall_pred_ECE_lag <- crosspred(cbECE,model,by= 1,cen = 0, cumul = TRUE)
+
+plot(overall_pred_ECE_lag,"slices",var=1,main="drought exposure",cumul = FALSE,col="black",
+ xlab="Lag (month)", ylab="Odds ratio",
+ cex.main=1.8,cex.lab=1.8, cex.axis=1.5,lwd=4, ylim=c(0.98,1.02),
+     ci.arg=list(col = grey(0.7)))
+
+overall_pred_ECE_ER_dlnm <- crosspred(cbECE,model,by= 1, cen= 0, cumul = TRUE)
+
+result_spei_serise <- data.frame(with(overall_pred_ECE_ER_dlnm,cbind(cumRRfit[,12],cumRRlow[,12],cumRRhigh[,12])))
+
+result_spei_serise$ECE <- rownames(result_spei_serise)
+
+result_spei_value <- result_spei_serise[which(result_spei_serise$ECE == 1),]
+
+#TC_analysis_u5mr_total
+#====================================================================================================================================
+library(foreign)
+library(lubridate)
+library(lme4)
+library(ggplot2)
+library(dlnm)
+library(splines)
+library(survival)
+
+#===========================================================================================================================
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_temp_month.rda")
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_precip_month.rda")
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_EW_52_trackdata.rda")
+
+frame_u5mr_TC <- data.frame(frame_u5mr_temp_month, frame_u5mr_precip_month, frame_u5mr_EW_52_trackdata)
+#===========================================================================================================================
+data <- frame_u5mr_TC
+
+met_TC <- subset(data,select=c(
+    R34exp_lag0_1m, R34exp_lag1m_2m, R34exp_lag2m_3m, R34exp_lag3m_4m, R34exp_lag4m_5m, R34exp_lag5m_6m, 
+    R34exp_lag6m_7m, R34exp_lag7m_8m, R34exp_lag8m_9m, R34exp_lag9m_10m, R34exp_lag10m_11m, R34exp_lag11m_12m,
+    R34exp_lag0_12m))
+
+#===========================================================================================================================
+result_merge <- data.frame(matrix(NA, 13, 5))
+
+colnames(result_merge) <- c("Lag", "P", "OR", "OR_low", "OR_high")
+
+result_merge[,1] <- c("Lag 1", "Lag 2","Lag 3","Lag 4",  "Lag 5", "Lag 6", "Lag 7", "Lag 8",
+ "Lag 9", "Lag 10", "Lag 11", "Lag 12", "Lag 0_12")
+
+for(i in 1:13){
+
+    cat(i)
+
+model <- clogit(formula = u5mr ~ met_TC[,i]
+        + as.factor(death_year) 
+        + as.factor(death_month)
+        + maternal_age_death
+        + ns(lag_0m_temp, 6)
+        + ns(lag_0m_precip, 3)
+        + CPI
+        + GDP
+        + as.factor(DHS_survey)
+        + as.factor(bnum)
+        + as.factor(sex)
+        + strata(caseid)
+        ,method = "breslow"
+        ,data=data, na.action=na.omit)
+
+coef<-data.frame(summary(model)$coefficients)
+exp<-data.frame(exp(coef(model)))
+conf<-data.frame(exp(confint(model)))
+p<-round(coef[1,5],3)
+OR<-round(exp[1,1],3)
+OR_high<-round(conf[1,2],3)
+OR_low<-round(conf[1,1],3)
+
+result<-data.frame(P=p,coefficient=OR,low=OR_low,high=OR_high)
+
+result_merge[i, c(2:5)] <- result
+
+}
+
+#wf_total_analysis_u5mr
+#====================================================================================================================================
+library(foreign)
+library(lubridate)
+library(lme4)
+library(ggplot2)
+library(dlnm)
+library(splines)
+library(survival)
+
+#===========================================================================================================================
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_temp_month.rda")
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_precip_month.rda")
+load("C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/model_analysis/frame_u5mr_wf.rda")
+
+frame_u5mr_wf <- data.frame(frame_u5mr_temp, frame_u5mr_precip, frame_u5mr_wf)
+#===========================================================================================================================
+data <- frame_u5mr_wf
+
+met_extr_wf <- subset(data,select=c(
+    lag_1m_wf, lag_2m_wf,lag_3m_wf,lag_4m_wf,lag_5m_wf,lag_6m_wf,
+    lag_7m_wf,lag_8m_wf,lag_9m_wf,lag_10m_wf,lag_11m_wf,lag_12m_wf
+    ))
+
+arglag <-equalknots(c(1,12), fun="ns", df=3, intercept=FALSE) 
+
+cbECE <- crossbasis(met_extr_wf,lag=c(1,12),argvar=list(fun="lin"),arglag = list(fun="poly",degree=3))
+
+model <- clogit(formula = u5mr ~ cbECE
+        + as.factor(death_year) 
+        + as.factor(death_month)
+        + maternal_age_death
+        + ns(lag_0m_temp, 6)
+        + ns(lag_0m_precip, 3)
+        + CPI
+        + GDP
+        + as.factor(DHS_survey)
+        + as.factor(bnum)
+        + as.factor(sex)
+        + strata(caseid)
+        ,method = "breslow"
+        ,data=data, na.action=na.omit)
+
+save(model, file = "C:/Users/yxzhu/Desktop/DHS_data_analysis/EWE_children_mortality/result_raw/model_wf.rda")
+
+overall_pred_ECE_lag <- crosspred(cbECE,model,by= 1,cen = 0, cumul = TRUE)
+
+plot(overall_pred_ECE_lag,"slices",var=1,main="wildfire exposure",cumul = FALSE,col="black",
+ xlab="Lag (month)", ylab="Odds ratio",
+ cex.main=1.8,cex.lab=1.8, cex.axis=1.5,lwd=4, ylim=c(0.92,1.02),
+     ci.arg=list(col = grey(0.7)))
+
+overall_pred_wf_ER_dlnm <- crosspred(cbECE,model, by= 1, cen= 0, cumul = TRUE)
+
+result_wf_serise <- data.frame(with(overall_pred_wf_ER_dlnm,cbind(cumRRfit[,12],cumRRlow[,12],cumRRhigh[,12])))
+
+result_wf_serise$ECE <- rownames(result_wf_serise)
+
+result_wf_value <- result_wf_serise[which(result_wf_serise$ECE == 1),]
+#==========================================================================================
