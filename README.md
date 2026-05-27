@@ -52,7 +52,6 @@ Implements an optimized Fast Nearest Neighbor search algorithm (FNN::knnx) to ma
 
 
 
-
 3\. 03\_AssociationEstimation.R
 
 Purpose: Distributed Lag Estimation and Multi-Definition Pooling.
@@ -65,19 +64,55 @@ Iterates across all six climate extreme dimensions to pool, format, and export r
 
 \---
 
+System Requirements
+Operating Systems
+Windows: 10 or 11 (64-bit)
 
+\---
 
+Software Dependencies & Tested Versions
+The workflow has been tested and verified on R Version 4.0.3 with the following packages:
+lubridate (v1.9.3)
+FNN (v1.1.3.2)
+dplyr (v1.1.4)
+splines (v4.5.1)
+dlnm (v2.4.7)
+survival (v3.3.1)
+
+\---
 Demonstration Dataset Overview: Tanzania DHS 2015–16 (frame_u5mr_ECE_month_TZ_2015_16.csv)
-
-
 
 To facilitate workflow verification and ensure procedural reproducibility, this repository provides a demonstration dataset derived from the 2015–16 Tanzania Demographic and Health Survey, linked with multi-decadal gridded climate reanalysis products.
 
+\---
+
+Instructions to Run Demo
+Put the demo dataset frame_u5mr_ECE_month_TZ_2015_16.csv in your working directory.
+
+Run the main analytical pipeline execution script:
+
+R
+source("03_AssociationEstimation.R")
+
+\---
+
+Instructions for Use
+How to Run the Software on Your Data
+To apply this pipeline to an alternative country or cohort dataset:
+
+Format Input Data: Ensure your target dataset follows the identical structural formatting as frame_u5mr_ECE_month_TZ_2015_16.csv, specifically including columns for maternal identifiers (caseid), survival metrics (u5mr, death_age_month), and monthly climate metrics.
+
+Run Association Estimation: Update the input filename in 03_AssociationEstimation.R and execute to compute the new cross-basis matrices and risk dimensions.
+
+\---
+
+Expected Output
+The script will process the matrix cross-basis engines and export a summary frame containing the estimated effects for each climate extreme, and plots for the lag patterns of the associations between under-5 mortality and each extreme climatic event. 
 
 
 >  \\\\\\\*\\\\\\\*Statistical Stability Caveat\\\\\\\*\\\\\\\*
 
-> This Tanzania subset is intentionally down-sampled and provided solely for procedural demonstration and syntax replication. Due to the restricted baseline sample size and diminished statistical power within specific climate extreme sub-strata, the conditional log-likelihood estimation and DLNM cross-basis polynomials may exhibit unstable confidence intervals, extreme standard errors, or failure to converge. This behavior is expected for this test block; full analytical robustness and stable risk surfaces require the complete multi-country pooled global dataset.
+> Tanzania subset is intentionally down-sampled and provided solely for procedural demonstration and syntax replication. Due to the restricted baseline sample size and diminished statistical power within specific climate extreme sub-strata, the conditional log-likelihood estimation and DLNM cross-basis polynomials may exhibit unstable confidence intervals, extreme standard errors, or failure to converge. This behavior is expected for this test block; full analytical robustness and stable risk surfaces require the complete multi-country pooled global dataset.
 
 \---
 
