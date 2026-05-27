@@ -21,25 +21,15 @@
 #   time-series datasets.
 
 # Methodology Overview:
-#   1. Localized Metric Thresholding & Run-Length Engine:
-#      Parses continuous daily gridded climate inputs cell-by-cell to compute relative thresholds (e.g., 90th/95th 
-#      percentiles). A vectorized run-length look-ahead algorithm is executed to isolate discrete extreme weather spells based 
-#      on dual constraints of intensity and consecutive duration.
-#   2. Spatial Matching & Data Chunking:
+#   1. Spatial Matching & Data Chunking:
 #      Extracts unique coordinate centroids from individual health clusters. It implements an optimized 1st-Nearest 
 #      Neighbor search algorithm (`FNN::knnx`) to map clusters instantaneously to the closest climate grid node. 
 #      Geodesic displacement distances are recorded for quality control. 
-#   3. Multi-Definition & Longitudinal Window Allocation:
+#   2. Multi-Definition & Longitudinal Window Allocation:
 #      Constructs parallel exposure series for 6 core climate anomalies across varied indices (e.g., event 
 #      occurrence vs continuous volume/intensity). For each child observation, the pipeline slices backward 
 #      from the precise index date (date of death or matched reference control date) to extract cumulative monthly 
 #      dosages across a 13-month retrospective window (Lag 0m through Lag 12m).
-
-# NOTICE: 
-# This script utilizes a subset of data from Tanzania as a representative demonstration. 
-# Due to the limited sample size and reduced statistical power of this illustrative dataset, 
-# modeling estimates (DLNM lag structures) may exhibit instability or non-convergence. 
-# Full analytical robustness requires the complete multi-country pooled dataset.
 
 # REQUIREMENTS:
 #   - R version 4.0.3 or higher
@@ -274,7 +264,7 @@ for (file_token in country_year) {
         output[l, ] <- tryCatch({
             # Columns 6 to 9 hold the binary exposure flags for the 4 distinct heatwave definitions
             c(
-                colSums(site[site$date > data$death_date_lag_1m[l]  & site$date <=  data$death_date_lag_1m[l], 6:9], na.rm = TRUE), # lag_0m
+                colSums(site[site$date > data$death_date_lag_1m[l]  & site$date <=  data$death_date_lag_0m[l], 6:9], na.rm = TRUE), # lag_0m
                 colSums(site[site$date > data$death_date_lag_2m[l]  & site$date <=  data$death_date_lag_1m[l], 6:9], na.rm = TRUE), # lag_1m
                 colSums(site[site$date > data$death_date_lag_3m[l]  & site$date <=  data$death_date_lag_2m[l], 6:9], na.rm = TRUE), # lag_2m
                 colSums(site[site$date > data$death_date_lag_4m[l]  & site$date <=  data$death_date_lag_3m[l], 6:9], na.rm = TRUE), # lag_3m
@@ -286,7 +276,7 @@ for (file_token in country_year) {
                 colSums(site[site$date > data$death_date_lag_10m[l] & site$date <=  data$death_date_lag_9m[l], 6:9], na.rm = TRUE), # lag_9m
                 colSums(site[site$date > data$death_date_lag_11m[l] & site$date <=  data$death_date_lag_10m[l],6:9], na.rm = TRUE), # lag_10m
                 colSums(site[site$date > data$death_date_lag_12m[l] & site$date <=  data$death_date_lag_11m[l],6:9], na.rm = TRUE), # lag_11m
-                colSums(site[site$date > data$death_date_lag_12m[l] & site$date <=  data$death_date_lag_12m[l],6:9], na.rm = TRUE)  # lag_12m 
+                colSums(site[site$date >= data$death_date_lag_12m[l] & site$date <=  data$death_date_lag_12m[l],6:9], na.rm = TRUE)  # lag_12m 
             )
         }, error = function(e) rep(NA, 13 * 4))
     }
@@ -433,4 +423,5 @@ for (file_token in country_year) {
   # Merge exposure matrix with epidemiological cohort dataframe and save back to main list
   DHS_data_u5mr         <- list_u5mr_EW[[file_token]]
   list_u5mr_EP[[file_token]] <- data.frame(DHS_data_u5mr, output)
+
 }
