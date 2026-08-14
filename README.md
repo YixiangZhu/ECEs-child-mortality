@@ -19,6 +19,8 @@ Sibling-Matched Case-Control Strata \& Temporal Alignment: Minimizes time-invari
 
 Distributed Lag Non-linear Model (DLNM): Constructs matrix cross-basis engines to capture exposure-response and lag-response dimensions (extending across a 13-month retrospective lag window) via conditional logistic regression.
 
+Spatial Mapping, Subgroup Analysis, and Publication Graphics Engine: Generates standardized, publication-ready global maps and forest plots to visualize regional risk heterogeneity, attributable mortality rates, temporal trends, and top country-level burdens.
+
 \---
 
 
@@ -62,6 +64,21 @@ Establishes the dlnm cross-basis matrices and executes stratified maximum likeli
 
 Iterates across all six climate extreme dimensions to pool, format, and export risk metrics alongside 95% Confidence Intervals.
 
+4. 04_Spatial_and_Figure_Visualization.R
+   Purpose: Spatial Risk Mapping, Forest Plot Generation, and Attributable Burden Visualization.
+   Data Inputs:
+   - Data_for_Figure_1.csv: Contains underlying tabular data for LMIC study area classification and multi-year mean exposure metrics.
+   - Data_for_Figures_2_6.xlsx: Archives multi-definition forest plot estimates (Figure 2), regional stratified ORs (Figure 3), aggregated regional burdens and PAF trends (Figures 4A & 4C), and top 30 country-level burdens (Figures 6A & 6B).
+   - Data_for_Figure_4B.csv: Contains gridded spatial dataset for global attributable child mortality rate mapping.
+   - Data_for_Figure_5.csv: Contains underlying grid data for mapping ECE-specific attributable mortality burdens across six individual climate extremes.
+   Core Functions:
+   - Figure 1: Renders publication-grade spatial maps displaying LMIC study area coverage (DHS Covered vs. Extrapolated) and multi-year mean exposure raster grids for 6 ECEs using terra and sf.
+   - Figure 2: Produces forest plots comparing estimated Odds Ratios (ORs) and 95% CIs across operational exposure definitions.
+   - Figure 3: Constructs grouped forest plots evaluating regional heterogeneity in ECE-related child mortality risks against global baseline pooled estimates.
+   - Figure 4: Visualizes global and regional mortality burdens (4A), high-resolution spatial grid maps of attributable death rates (4B), and temporal trends of Population Attributable Fraction (PAF%) from 2002 to 2019 (4C).
+   - Figure 5: Generates batch spatial raster maps displaying global attributable mortality burdens for each individual ECE indicator.
+   - Figure 6: Constructs stacked horizontal bar charts identifying the top 30 LMICs with the highest absolute attributable deaths and mortality rates per 100,000 person-years.
+  
 \---
 
 System Requirements
@@ -72,17 +89,25 @@ Windows: 10 or 11 (64-bit)
 
 Software Dependencies & Tested Versions
 The workflow has been tested and verified on R Version 4.0.3 with the following packages:
-lubridate (v1.9.3)
-FNN (v1.1.3.2)
-dplyr (v1.1.4)
-splines (v4.5.1)
-dlnm (v2.4.7)
-survival (v3.3.1)
+- lubridate (v1.9.3)
+- FNN (v1.1.3.2)
+- dplyr (v1.1.4)
+- splines (v4.5.1)
+- dlnm (v2.4.7)
+- survival (v3.3.1)
+- tidyverse (v2.0.0+)
+- sf (v1.0.0+)
+- terra (v1.7.0+)
+- rnaturalearth & rnaturalearthdata
+- RColorBrewer
+- stringr
 
 \---
 Demonstration Dataset Overview: Tanzania DHS 2015–16 (frame_u5mr_ECE_month_TZ_2015_16.csv)
 
 To facilitate workflow verification and ensure procedural reproducibility, this repository provides a demonstration dataset derived from the 2015–16 Tanzania Demographic and Health Survey, linked with multi-decadal gridded climate reanalysis products.
+
+Data_for_Figure_1.csv, Data_for_Figures_2_6.xlsx, Data_for_Figure_4B.csv, Data_for_Figure_5.csv
 
 \---
 
