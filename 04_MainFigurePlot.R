@@ -14,8 +14,8 @@
 
 # DATA NOTICE: 
 # Spatial exposure raster inputs (GeoTIFF files) represent grid-level multi-year 
-# mean exposure metrics, corresponding to underlying data archived in 'Data_for_Figures.xlsx' 
-# (Figure 1 sheet) and spatial layers processed using ArcGIS Pro. File paths should
+# mean exposure metrics, corresponding to underlying data archived in 'Data_for_Figure_1.csv' 
+# and spatial layers processed using ArcGIS Pro. File paths should
 # be modified according to local working directory configurations prior to execution.
 
 # REQUIREMENTS:
@@ -259,7 +259,7 @@ plot_exposure_raster(
 
 # DATA NOTICE: 
 # The input dataset contains point estimates (ORs) and 95% confidence intervals 
-# archived in 'Data_for_Figures.xlsx' (Figure 2 sheet). File paths should be 
+# archived in 'Data_for_Figures_2_6.xlsx' (Figure 2 sheet). File paths should be 
 # configured locally prior to running the script.
 
 # REQUIREMENTS:
@@ -351,7 +351,7 @@ ggsave(
 
 # DATA NOTICE: 
 # The underlying dataset containing regional stratified point estimates (ORs) and 95% 
-# confidence intervals is archived in 'Data_for_Figures.xlsx' (Figure 3 sheet). File 
+# confidence intervals is archived in 'Data_for_Figures_2_6.xlsx' (Figure 3 sheet). File 
 # paths should be configured locally prior to running the script.
 
 # REQUIREMENTS:
@@ -470,7 +470,7 @@ ggsave(
 
 # DATA NOTICE: 
 # Underlying tabular datasets for Panels 4A, 4B, and 4C are archived in 
-# 'Data_for_Figures.xlsx' (Figure 4A, 4B and 4C sheet).
+# 'Data_for_Figures_2_6.xlsx' (Figure 4A and 4C sheet) and "Data_for_Figure_4B.csv".
 # File paths should be configured locally prior to execution.
 
 # Methodology Overview:
