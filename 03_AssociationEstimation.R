@@ -12,7 +12,7 @@
 
 # Methodology Overview:
 #   1. DLNM Spline Construction: Utilizes a flexible matrix cross-basis engine to characterize 
-#      the joint distribution of exposure-response (linear constraints) and lag-response (3rd-degree polynomials 
+#      the joint distribution of exposure-response (linear constraints) and lag-response (3rd-degree natural cubic spline 
 #      extending up to a 12-month retrospective lag window).
 #   2. Sibling-Matched Conditional Likelihood Maximization: Fits a conditional logistic regression (`clogit`) 
 #      stratified within maternal lineages (`caseid`). This design inherently controls for time-invariant 
@@ -51,10 +51,10 @@ read.csv("frame_u5mr_ECE_month.csv")
 data <- frame_u5mr_ECE_month_TZ
 
 # Define global settings for the cross-basis functions
-# Models up to 12 months of lag effects with a linear exposure-response and a 3rd-degree polynomial lag structure
+# Models up to 12 months of lag effects with a linear exposure-response and a 3rd-degree natural cubic spline  lag structure
 maxlag <- c(0,12)
 argvar <- list(fun="lin")
-arglag <- list(fun="poly",degree=3)
+arglag <- list(knots=equalknots(c(0,12), fun="ns", df=3, intercept=FALSE))
 
 # Initialize an empty list to collect results
 results_list <- list()
