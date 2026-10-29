@@ -1,0 +1,6 @@
+# R 运行时临时文件
+.Rhistory
+*.log
+.RData
+.Ruserdata
+.Rproj.user

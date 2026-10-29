@@ -1,0 +1,127 @@
+Num,DHS,COUNTRY,REGION
+1,0,Afghanistan,Central & South Asia
+2,0,Algeria,"Europe, Middle East & North Africa"
+3,0,Azerbaijan,"Europe, Middle East & North Africa"
+4,1,Albania,"Europe, Middle East & North Africa"
+5,1,Armenia,"Europe, Middle East & North Africa"
+6,1,Angola,Sub-Saharan Africa
+7,0,Argentina,Latin America & Caribbean
+8,0,Botswana,Sub-Saharan Africa
+9,1,Bangladesh,Central & South Asia
+10,0,Belize,Latin America & Caribbean
+11,0,Bosnia and Herzegovina,"Europe, Middle East & North Africa"
+12,1,Bolivia,Latin America & Caribbean
+13,1,Myanmar,East Asia & Pacific
+14,1,Benin,Sub-Saharan Africa
+15,0,Belarus,"Europe, Middle East & North Africa"
+16,0,Solomon Islands,East Asia & Pacific
+17,0,Brazil,Latin America & Caribbean
+18,0,Bhutan,Central & South Asia
+19,0,Burundi,Sub-Saharan Africa
+20,1,Cambodia,East Asia & Pacific
+21,1,Chad,Sub-Saharan Africa
+22,0,Sri Lanka,Central & South Asia
+23,0,Congo,Sub-Saharan Africa
+24,1,Democratic Republic of the Congo,Sub-Saharan Africa
+25,0,China,East Asia & Pacific
+26,1,Cameroon,Sub-Saharan Africa
+27,1,Comoros,Sub-Saharan Africa
+28,1,Colombia,Latin America & Caribbean
+29,1,Central African Republic,Sub-Saharan Africa
+30,0,Cuba,Latin America & Caribbean
+31,0,Cape Verde,Sub-Saharan Africa
+32,0,Djibouti,"Europe, Middle East & North Africa"
+33,0,Dominica,Latin America & Caribbean
+34,1,Dominican Republic,Latin America & Caribbean
+35,0,Ecuador,Latin America & Caribbean
+36,1,Egypt,"Europe, Middle East & North Africa"
+37,0,Equatorial Guinea,Sub-Saharan Africa
+38,0,Eritrea,Sub-Saharan Africa
+39,0,El Salvador,Latin America & Caribbean
+40,1,Ethiopia,Sub-Saharan Africa
+41,0,Fiji,East Asia & Pacific
+42,1,Gambia,Sub-Saharan Africa
+43,1,Gabon,Sub-Saharan Africa
+44,0,Georgia,"Europe, Middle East & North Africa"
+45,1,Ghana,Sub-Saharan Africa
+46,0,Grenada,Latin America & Caribbean
+47,1,Guatemala,Latin America & Caribbean
+48,1,Guinea,Sub-Saharan Africa
+49,0,Palestine,"Europe, Middle East & North Africa"
+50,1,Haiti,Latin America & Caribbean
+51,1,Honduras,Latin America & Caribbean
+52,1,India,Central & South Asia
+53,0,Iran,"Europe, Middle East & North Africa"
+54,1,C?te d'Ivoire,Sub-Saharan Africa
+55,0,Iraq,"Europe, Middle East & North Africa"
+56,0,Jamaica,Latin America & Caribbean
+57,1,Jordan,"Europe, Middle East & North Africa"
+58,1,Kenya,Sub-Saharan Africa
+59,1,Kyrgyzstan,Central & South Asia
+60,0,North Korea,East Asia & Pacific
+61,0,Kiribati,East Asia & Pacific
+62,0,Kazakhstan,Central & South Asia
+63,0,Laos,East Asia & Pacific
+64,0,Lebanon,"Europe, Middle East & North Africa"
+65,1,Liberia,Sub-Saharan Africa
+66,1,Lesotho,Sub-Saharan Africa
+67,0,Libya,"Europe, Middle East & North Africa"
+68,1,Madagascar,Sub-Saharan Africa
+69,1,Moldova,"Europe, Middle East & North Africa"
+70,0,Mongolia,East Asia & Pacific
+71,1,Malawi,Sub-Saharan Africa
+72,0,Macedonia,"Europe, Middle East & North Africa"
+73,1,Mali,Sub-Saharan Africa
+74,1,Morocco,"Europe, Middle East & North Africa"
+75,0,Marshall Islands,East Asia & Pacific
+76,0,Maldives,Central & South Asia
+77,0,Mauritius,Sub-Saharan Africa
+78,0,Mauritania,Sub-Saharan Africa
+79,0,Montenegro,"Europe, Middle East & North Africa"
+80,0,Mexico,Latin America & Caribbean
+81,0,Malaysia,East Asia & Pacific
+82,1,Mozambique,Sub-Saharan Africa
+83,1,Niger,Sub-Saharan Africa
+84,0,Vanuatu,East Asia & Pacific
+85,1,Nigeria,Sub-Saharan Africa
+86,1,Nepal,Central & South Asia
+87,0,Suriname,Latin America & Caribbean
+88,0,Nicaragua,Latin America & Caribbean
+89,0,Paraguay,Latin America & Caribbean
+90,1,Peru,Latin America & Caribbean
+91,1,Pakistan,Central & South Asia
+92,0,Papua New Guinea,East Asia & Pacific
+93,0,Guinea-Bissau,Sub-Saharan Africa
+94,1,Philippines,East Asia & Pacific
+95,1,Rwanda,Sub-Saharan Africa
+96,1,South Africa,Sub-Saharan Africa
+97,1,Senegal,Sub-Saharan Africa
+98,1,Sierra Leone,Sub-Saharan Africa
+99,0,Serbia,"Europe, Middle East & North Africa"
+100,0,Sudan,"Europe, Middle East & North Africa"
+101,0,Syria,"Europe, Middle East & North Africa"
+102,1,Thailand,East Asia & Pacific
+103,1,Tajikistan,Central & South Asia
+104,0,Tonga,East Asia & Pacific
+105,1,Togo,Sub-Saharan Africa
+106,0,Sao Tome and Principe,Sub-Saharan Africa
+107,0,Tunisia,"Europe, Middle East & North Africa"
+108,0,Turkey,"Europe, Middle East & North Africa"
+109,0,Turkmenistan,Central & South Asia
+110,1,Tanzania,Sub-Saharan Africa
+111,1,Uganda,Sub-Saharan Africa
+112,0,Ukraine,"Europe, Middle East & North Africa"
+113,1,Burkina Faso,Sub-Saharan Africa
+114,0,Uzbekistan,Central & South Asia
+115,0,St. Vincent and the Grenadines,Latin America & Caribbean
+116,0,St. Lucia,Latin America & Caribbean
+117,1,Vietnam,East Asia & Pacific
+118,1,Namibia,Sub-Saharan Africa
+119,0,Western Samoa,East Asia & Pacific
+120,1,Eswatini,Sub-Saharan Africa
+121,0,Yemen,"Europe, Middle East & North Africa"
+122,1,Zambia,Sub-Saharan Africa
+123,1,Zimbabwe,Sub-Saharan Africa
+124,0,South Sudan,Sub-Saharan Africa
+125,1,Indonesia,East Asia & Pacific
+126,0,East Timor,East Asia & Pacific
